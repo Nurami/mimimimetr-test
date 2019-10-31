@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Vote</title>
+    <style>
+        .center {
+            text-align: center;
+        }
+
+        .size {
+            width: 250px;
+            height: 250px;
+        }
+    </style>
+</head>
+<body>
+<h1 class="center">Mimimimetr</h1>
+<div class="center">
+    <th:block th:each="cat: ${list}">
+        <div style="display: inline-block">
+            <img th:id="${cat.id}"
+                 th:src="${'data:image/png;base64, '+ cat.imageInBase64}"
+                 class="size" onclick="vote(this.id)">
+            <div class="center">
+                <input th:id="${cat.id}" type="button" th:value="${cat.name}" onclick="vote(this.id)">
+            </div>
+        </div>
+    </th:block>
+</div>
+</body>
+<script>
+    function vote(clickedID) {
+        sendRequest(clickedID, '/vote');
+        location.reload();
+    }
+
+    function sendRequest(data, url) {
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', url, false);
+        xhr.send(data);
+        if (xhr.status != 200) {
+            console.log(xhr.status + ': ' + xhr.statusText);
+        } else {
+            console.log(xhr.responseText);
+        }
+        ;
+    }
+</script>
+</html>
